@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1>Upcoming Auction Cars</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Enter a burger you want to eat then click "Submit"</h4>
+            <br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <br> 
+            {{#each car}}
+
+            <div class="card " style="width: 18rem;">
+                <div class="card-body">
+                    <h4>Upcoming Cars</h4>
+                    <div class="well devoured">
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+</div>
