@@ -1,25 +1,27 @@
 <div class="container">
-    <div class="jumbotron text-center">
-        <h1>Upcoming Auction Cars</h1>
-    </div>
 
     <div class="row">
-        <div class="col-sm-12">
-            <h4>Enter a burger you want to eat then click "Submit"</h4>
-            <br>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">NY Times Article Scraper</h1>
+                <a href="/scrape">
+                    <button type="button" class="btn btn-info">Fresh Scrape</button>
+                </a>
+                <h4 class="lead">Select article to write a note.</h4>
+                <hr>
+            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-6">
-            <br> 
-            {{#each car}}
-
-            <div class="card " style="width: 18rem;">
+            <br> {{#each article}}
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src=".../100px180/" alt="Card image cap">
                 <div class="card-body">
-                    <h4>Upcoming Cars</h4>
-                    <div class="well devoured">
-                    </div>
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
             {{/each}}
