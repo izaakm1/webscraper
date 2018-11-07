@@ -57,6 +57,14 @@ router.get("/scrape", function (req, res) {
             result.push(temp)
 
             // Create a new Article using the `result` object built from scraping
+            let newArticle = db.Articles(temp)
+            newArticle.save((err,doc) =>{
+                if (err) {
+                    console.log(`${temp} not saved`)
+                } else {
+                    console.log(`${temp} saved!`)
+                }
+            })
             // db.Article.create(temp)
             //   .then(function(dbArticle) {
             //     // View the added result in the console
