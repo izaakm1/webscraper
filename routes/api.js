@@ -12,8 +12,8 @@ const cheerio = require("cheerio")
 
 const nprimg = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/National_Public_Radio_logo.svg/1200px-National_Public_Radio_logo.svg.png"
 // homepage routing
-router.get("/", function (req, res) {
-    res.render("index")
+router.get("/", (req, res) => {
+        res.render("index")
 });
 
 // A GET route for scraping the echoJS website
@@ -30,6 +30,8 @@ router.get("/scrape", function (req, res) {
 
             var temp = {}
             // Add the text and href of every link, and save them as properties of the result object
+
+
             temp.title = $(this)
                 .find(".story-text a:nth-child(2)")
                 .text()
@@ -52,26 +54,29 @@ router.get("/scrape", function (req, res) {
                 temp.image = nprimg
             }
 
-            result.push(temp)
+            if(temp.article !== "" && temp.title !== ""){
+                result.push(temp)
+                // console.log(`${temp} !\n\n`)
+            } 
 
             // Create a new Article using the `result` object built from scraping
-            let newArticle = db.Articles(temp)
-            newArticle.save((err,doc) =>{
-                if (err) {
-                    console.log(`${temp} not saved`)
-                } else {
-                    console.log(`${temp} saved!`)
-                }
-            })
-            // db.Article.create(temp)
-            //   .then(function(dbArticle) {
-            //     // View the added result in the console
-            //     console.log(`success! ${dbArticle}`);
-            //   })
-            //   .catch(function(err) {
-            //     // If an error occurred, send it to the client
-            //     return res.json(`error! ${err}`);
-            //   });
+            // let newArticle = db.Article(temp)
+            // newArticle.save((err,doc) =>{
+            //     if (err) {
+            //         console.log(`${temp} not saved`)
+            //     } else {
+            //         console.log(`${temp} saved!`)
+            //     }
+            // })
+            db.Article.create(temp)
+              .then(function(dbArticle) {
+                // View the added result in the console
+                console.log(`success! ${dbArticle}`);
+              })
+              .catch(function(err) {
+                // If an error occurred, send it to the client
+                return res.json(`error! ${err}`);
+              });
         });
 
         // If we were able to successfully scrape and save an Article, send a message to the client
