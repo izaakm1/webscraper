@@ -1,4 +1,5 @@
 const express = require("express");
+const exphbs = require("express-handlebars");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -8,14 +9,9 @@ const PORT = process.env.PORT || 8080;
 // Initialize Express
 const app = express();
 
-// Make public a static folder
-app.use(express.static("./public"));
-
 // Configure middleware
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
 app.use(bodyParser.json());
 
 // Use morgan logger for logging requests
@@ -28,15 +24,23 @@ app.use(express.json());
 // Connect to the Mongo DB for Heroku deployment
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB, { useNewUrlParser: true })
+let db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log("DB connected")
+})
 mongoose.set("useCreateIndex", true)
 
 // old connectino to mongo
 // mongoose.connect("mongodb://root:root@localhost/mongoHeadlines?authSource=admin", { useNewUrlParser: true });
 
 // handlebars setup
-const exphbs = require("express-handlebars");
+
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+// static files
+app.use(express.static("./public"));
 
 // Routes
 // Import routes and give the server access to them.
