@@ -1,34 +1,42 @@
 <div class="container">
 
-    <div class="row">
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1 class="display-4">NY Times Article Scraper</h1>
-                <a href="/scrape">
-                    <button type="button" class="btn btn-info">Fresh Scrape</button>
-                </a>
-                <h4 class="lead">Select article to write a note.{{example}}</h4>
-                <hr>
-            </div>
+    <div class="jumbotron jumbotron-fluid text-center">
+        <div class="container">
+            <h1 class="display-4">NPR News Scraper</h1>
+            <a href="/scrape">
+                <button type="button" class="btn btn-info">Fresh Scrape</button>
+            </a>
+            <h4 class="lead">Select article to write a note.{{example}}</h4>
         </div>
     </div>
+
 
     <div class="row">
         {{#each result}}
-        <div class="col-sm-3">
+        <div class="col-sm-6 col-lg-4">
             <br>
-            <a href="">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src={{this.image}} alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.title}}</h5>
-                        <p class="card-text">{{this.article}}.</p>
-                        <a href="{{this.link}}" class="btn btn-primary">Reach More</a>
+
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src={{this.image}} alt="Image missing">
+                <div class="card-body">
+                    <a href="">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    </a>
+                    <p class="card-text">{{this.article}}.</p>
+                    <a href="{{this.link}}" class="btn btn-primary">Read More</a>
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Comment
+                    </button>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                        </div>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
+        </a>
         {{/each}}
     </div>
-
+</div>
 </div>
