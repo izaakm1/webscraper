@@ -50,8 +50,6 @@ router.get("/scrape", function (req, res) {
 
             if(temp.image == undefined){
                 temp.image = nprimg
-                console.log("no image")
-                console.log(temp.image)
             }
 
             result.push(temp)
