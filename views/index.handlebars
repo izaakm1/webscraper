@@ -22,15 +22,15 @@
                     </a>
                     <p class="card-text">{{this.article}}.</p>
                     <a href="{{this.link}}" class="btn btn-info btn-block btn-sm">Read More</a>
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{this.id}}" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-info btn-block btn-sm" type="button" data-toggle="collapse" data-target="#{{this.id}}" aria-expanded="false" aria-controls="collapseExample">
                     Comment
                     </button>
                     <div class="collapse" id="{{this.id}}">
                         <div class="card card-body">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Comment" aria-label="comment" aria-describedby="button-addon2">
+                                <input type="text" id="body-input"class="form-control" placeholder="Comment" aria-label="comment" aria-describedby="button-addon2">
                                 <div class="input-group-append">
-                                    ><button class="btn btn-outline-secondary" type="button" id="save-note button-addon2">Post</button>
+                                    <button class="btn btn-outline-secondary" type="button" id="savenote button-addon2">Post</button>
                                 </div>
                             </div>
                         </div>
