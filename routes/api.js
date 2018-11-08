@@ -17,10 +17,10 @@ router.get("/", (req, res) => {
     res.render("index")
 });
 
-// A GET route for scraping the echoJS website
+// A GET route for scraping the NPR website
 router.get("/scrape", function (req, res) {
 
-    // empty the datbase
+    // empty the database
     db.Article.remove({})
 
     // First, we grab the body of the html with axios
@@ -57,8 +57,11 @@ router.get("/scrape", function (req, res) {
                 temp.image = nprimg
             }
 
+            if(temp.title == ""){
+            console.log(`no title! ${temp.title}`)
+            }
             // if we dont have article or title then do not include
-            if (temp.article !== "" || temp.title !== "") {
+            if (temp.title !== "" && temp.title !== ".") {
                 result.push(temp)
                 // console.log(`${temp} !\n\n`)
             }
@@ -67,7 +70,7 @@ router.get("/scrape", function (req, res) {
             db.Article.create(temp)
                 .then(function (dbArticle) {
                     // View the added result in the console
-                    console.log(`success! ${dbArticle}`);
+                    // console.log(`success! ${dbArticle}`);
                 })
                 .catch(function (err) {
                     // If an error occurred, send it to the client
@@ -78,6 +81,7 @@ router.get("/scrape", function (req, res) {
         console.log(`\nSCRAPE COMPLETE: ${result.length} total articles\n`)
         console.log(`result title is: ${result[1].title}`)
     }).then(() => {
+        debugger;
         // If we were able to successfully scrape and save an Article, send a message to the client
         db.Article.find({})
             .then((dbArticle) => {
@@ -122,6 +126,9 @@ router.get("/articles/:id", function (req, res) {
 
 // Route for saving/updating an Article's associated Note
 router.post("/articles/:id", function (req, res) {
+    console.log(req.body)
+    let note = req.body.body
+    console.log(note)
     // Create a new note and pass the req.body to the entry
     db.Note.create(req.body)
         .then(function (dbNote) {
@@ -133,6 +140,7 @@ router.post("/articles/:id", function (req, res) {
         .then(function (dbArticle) {
             // If we were able to successfully update an Article, send it back to the client
             res.json(dbArticle);
+            console.log(dbArticle)
         })
         .catch(function (err) {
             // If an error occurred, send it to the client

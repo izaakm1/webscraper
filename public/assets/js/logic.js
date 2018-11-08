@@ -45,14 +45,41 @@ window.onload = function () {
   });
 
   // When you click the savenote button
-  document.getElementsByClassName("savenote").addEventListener('click', function () {
-    console.log("you clicked something bro")
+  const saveNoteBtns = document.querySelectorAll(".savenote")
+  saveNoteBtns.forEach(element => {
+    element.addEventListener('click', function() {
+
+      let noteText = $(this).parents().eq(1).find("#body-input").val()
+      let thisId = $(this).attr("data-id")
+
+      console.log(noteText)
+
+      // Run a POST request to change the note, using what's entered in the inputs
+      $.ajax({
+        method: "POST",
+        url: "/articles/" + thisId,
+        data: {
+          // Value taken from title input
+          // title: $("#titleinput").val(),
+          // Value taken from note textarea
+          body: noteText
+        }
+      })
+        // With that done
+        .then(function (data) {
+          // Log the response
+          console.log(data);
+          // Empty the notes section
+          $("#notes").empty();
+        });
+    })
   })
-  // $(document).on("click", "#savenote", function() {
+
+  // $(document).on("click", ".savenote", function() {
   //   console.log("you saved a note!")
   //   // Grab the id associated with the article from the submit button
   //   var thisId = $(this).attr("data-id");
-
+  //   console.log($("#body-input").val())
   //   // Run a POST request to change the note, using what's entered in the inputs
   //   $.ajax({
   //     method: "POST",
@@ -61,7 +88,7 @@ window.onload = function () {
   //       // Value taken from title input
   //       // title: $("#titleinput").val(),
   //       // Value taken from note textarea
-  //       body: $("#bodyinput").val()
+  //       body: $("#body-input").val()
   //     }
   //   })
   //     // With that done

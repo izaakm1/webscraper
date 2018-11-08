@@ -3,7 +3,7 @@ const exphbs = require("express-handlebars");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const MONGODB = "mongodb://root:root@localhost/mongoHeadlines?authSource=admin"
+const MONGODB = process.env.MONGODB_URI || "mongodb://root:root@localhost/mongoHeadlines?authSource=admin"
 const PORT = process.env.PORT || 8080;
 
 // Initialize Express
@@ -35,7 +35,6 @@ mongoose.set("useCreateIndex", true)
 // mongoose.connect("mongodb://root:root@localhost/mongoHeadlines?authSource=admin", { useNewUrlParser: true });
 
 // handlebars setup
-
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
