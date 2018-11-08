@@ -12,7 +12,7 @@
 
 
     <div class="row">
-        {{#each result}}
+        {{#each article}}
         <div class="col-sm-6 col-lg-4">
             <div class="card text-center" style="width: 18rem;">
                 <img class="card-img-top" src={{this.image}} alt="Image missing">
@@ -30,7 +30,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" id="body-input"class="form-control" placeholder="Comment" aria-label="comment" aria-describedby="button-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="savenote button-addon2">Post</button>
+                                    <button class="btn btn-sm btn-outline-secondary savenote" type="button" id="button-addon2">Save Note</button>
                                 </div>
                             </div>
                         </div>

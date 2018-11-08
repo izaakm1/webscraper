@@ -19,18 +19,22 @@ router.get("/", (req, res) => {
 
 // A GET route for scraping the echoJS website
 router.get("/scrape", function (req, res) {
+
+    // empty the datbase
+    db.Article.remove({})
+
     // First, we grab the body of the html with axios
+
     axios.get("https://www.npr.org/").then(function (response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
-        var $ = cheerio.load(response.data);
+        let $ = cheerio.load(response.data);
         let result = [];
 
-        // Now, we grab every h2 within an article tag, and do the following:
+        // Grab all the articles and stuff into the result array and send to db
         $(".story-wrap").each(function (i, element) {
 
             var temp = {}
 
-            // build out the article array usign a temp variable to save each article in db
             temp.title = $(this)
                 .find(".story-text a:nth-child(2)")
                 .text()
@@ -54,7 +58,7 @@ router.get("/scrape", function (req, res) {
             }
 
             // if we dont have article or title then do not include
-            if (temp.article !== "" && temp.title !== "") {
+            if (temp.article !== "" || temp.title !== "") {
                 result.push(temp)
                 // console.log(`${temp} !\n\n`)
             }
@@ -63,7 +67,7 @@ router.get("/scrape", function (req, res) {
             db.Article.create(temp)
                 .then(function (dbArticle) {
                     // View the added result in the console
-                    // console.log(`success! ${dbArticle}`);
+                    console.log(`success! ${dbArticle}`);
                 })
                 .catch(function (err) {
                     // If an error occurred, send it to the client
@@ -72,18 +76,18 @@ router.get("/scrape", function (req, res) {
         });
 
         console.log(`\nSCRAPE COMPLETE: ${result.length} total articles\n`)
-        console.log(`${result[1].title}`)
-    });
-
-    // If we were able to successfully scrape and save an Article, send a message to the client
-    db.Article.find({})
-        .then((dbArticle) => {
-            res.render("index", {result:dbArticle})
-        })
-        .catch((err) => {
-            console.log(`\nERROR ${err}`)
-        })
-
+        console.log(`result title is: ${result[1].title}`)
+    }).then(() => {
+        // If we were able to successfully scrape and save an Article, send a message to the client
+        db.Article.find({})
+            .then((dbArticle) => {
+                console.log("found something!")
+                res.render("index", { article: dbArticle })
+            })
+            .catch((err) => {
+                console.log(`\nERROR ${err}`)
+            })
+    })
 });
 
 // Route for getting all Articles from the db

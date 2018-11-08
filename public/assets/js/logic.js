@@ -1,4 +1,5 @@
 window.onload = function () {
+  console.log("window loaded")
   // Grab the articles as a json
   $.getJSON("/articles", function (data) {
     // For each one
@@ -44,7 +45,7 @@ window.onload = function () {
   });
 
   // When you click the savenote button
-  document.getElementById("savenote").addEventListener('click', function () {
+  document.getElementsByClassName("savenote").addEventListener('click', function () {
     console.log("you clicked something bro")
   })
   // $(document).on("click", "#savenote", function() {
