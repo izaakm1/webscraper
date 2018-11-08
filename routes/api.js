@@ -14,7 +14,7 @@ const nprimg = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Nation
 
 // homepage routing
 router.get("/", (req, res) => {
-        res.render("index")
+    res.render("index")
 });
 
 // A GET route for scraping the echoJS website
@@ -25,14 +25,12 @@ router.get("/scrape", function (req, res) {
         var $ = cheerio.load(response.data);
         let result = [];
 
-        // console.log(response.data)
         // Now, we grab every h2 within an article tag, and do the following:
         $(".story-wrap").each(function (i, element) {
 
             var temp = {}
-            // Add the text and href of every link, and save them as properties of the result object
 
-
+            // build out the article array usign a temp variable to save each article in db
             temp.title = $(this)
                 .find(".story-text a:nth-child(2)")
                 .text()
@@ -51,34 +49,41 @@ router.get("/scrape", function (req, res) {
                 .find(".story-wrap img:nth-child(1)")
                 .attr("src");
 
-            if(temp.image == undefined){
+            if (temp.image == undefined) {
                 temp.image = nprimg
             }
 
             // if we dont have article or title then do not include
-            if(temp.article !== "" && temp.title !== ""){
+            if (temp.article !== "" && temp.title !== "") {
                 result.push(temp)
                 // console.log(`${temp} !\n\n`)
-            } 
+            }
 
             // Create a new Article using the `result` object built from scraping
             db.Article.create(temp)
-              .then(function(dbArticle) {
-                // View the added result in the console
-                console.log(`success! ${dbArticle}`);
-              })
-              .catch(function(err) {
-                // If an error occurred, send it to the client
-                return res.json(`error! ${err}`);
-              });
+                .then(function (dbArticle) {
+                    // View the added result in the console
+                    // console.log(`success! ${dbArticle}`);
+                })
+                .catch(function (err) {
+                    // If an error occurred, send it to the client
+                    return res.json(`error! ${err}`);
+                });
         });
 
-        // If we were able to successfully scrape and save an Article, send a message to the client
-        res.render("index", { result: result });
         console.log(`\nSCRAPE COMPLETE: ${result.length} total articles\n`)
-
         console.log(`${result[1].title}`)
     });
+
+    // If we were able to successfully scrape and save an Article, send a message to the client
+    db.Article.find({})
+        .then((dbArticle) => {
+            res.render("index", {result:dbArticle})
+        })
+        .catch((err) => {
+            console.log(`\nERROR ${err}`)
+        })
+
 });
 
 // Route for getting all Articles from the db
